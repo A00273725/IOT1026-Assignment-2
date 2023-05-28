@@ -9,37 +9,122 @@
 
         public TreasureChest()
         {
-            throw new NotImplementedException();
+            _material = Material.Iron;
+            _lockType = LockType.Expert;
+            _lootQuality = LootQuality.Green;
         }
-
-        public TreasureChest(Material material, LockType lockType, LootQuality lootQuality)
+        public TreasureChest(State state) : this()
+        {
+            _state = state;
+        }
         {
             throw new NotImplementedException();
         }
 
-        public State? Manipulate(Action action)
+        public TreasureChest(Material material, LockType lockType, LootQuality lootQuality, LootQuality LootQuality)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+            material = Material.Iron;
+            lockType = LockType.Expert;
+            LootQuality = LootQuality.Green;
         }
 
-        private void Unlock()
+        public State Manipulate(Action action)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            switch(action)
+            {
+                case Action.lock:
+                    Lock();
+                    break;
+                case Action.Unlock:
+                    Unlock();
+                    break;
+                case Action.Open:
+                    Open();
+                    break;
+                case Action.Close:
+                    Close();
+                    break;
+                
+                }
+                return _state;
+            }
         }
 
-        private void Lock()
+        /*private void Open()
         {
             throw new NotImplementedException();
-        }
+        }*/
 
-        private void Open()
+        public void Unlock()
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+           if (_state == State.Locked)
+           {
+            _state = State.Closed;
+           }
+           else if (_state == State.Closed)
+           {
+            Console.WriteLine("chest will not unlocked when it is closed");
+           }
+           else if (_state == State.Open)
+           {
+            Console.WriteLine("chest will not unlocked when it is open");
+           }
         }
-
-        private void Close()
+        //lock treasure chest
+        public void Lock()
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+           if (_state == State.Closed)
+           {
+            _state = State.Locked;
+           }
+           else if (_state == State.Locked)
+           {
+            Console.WriteLine("chest is locked when it is closed");
+           }
+           else if (_state == State.Open)
+           {
+            Console.WriteLine("chest will not locked when it is open");
+           }
+        }
+        }
+        //open treasure chest
+        public void Open()
+        {
+            //throw new NotImplementedException();
+            if (_state == State.Closed)
+           {
+            _state = State.Open;
+           }
+           else if (_state == State.Open)
+           {
+            Console.WriteLine("chest is open");
+           }
+           else if (_state == State.Locked)
+           {
+            Console.WriteLine("chest is locked");
+           }
+        }
+        }
+        //close treasure chest
+        public void Close()
+        {
+            //throw new NotImplementedException();
+            if (_state == State.Open)
+           {
+            _state = State.Closed;
+           }
+           else if (_state == State.Closed)
+           {
+            Console.WriteLine("chest is closed");
+           }
+           else if (_state == State.Locked)
+           {
+            Console.WriteLine("chest is locked");
+           }
         }
 
         public override string ToString()
