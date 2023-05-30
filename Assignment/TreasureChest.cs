@@ -1,130 +1,108 @@
-﻿namespace Assignment
+﻿﻿namespace Assignment
 {
-    class TreasureChest
+    public class TreasureChest
     {
         private State _state = State.Locked;
         private readonly Material _material;
         private readonly LockType _lockType;
         private readonly LootQuality _lootQuality;
 
+        // Default Constructor
         public TreasureChest()
         {
             _material = Material.Iron;
             _lockType = LockType.Expert;
             _lootQuality = LootQuality.Green;
         }
+
+        // document xml
         public TreasureChest(State state) : this()
         {
             _state = state;
         }
+        public TreasureChest(Material material, LockType lockType, LootQuality lootQuality)
         {
-            throw new NotImplementedException();
+            _material = material;
+            _lockType = lockType;
+            _lootQuality = lootQuality;
         }
-
-        public TreasureChest(Material material, LockType lockType, LootQuality lootQuality, LootQuality LootQuality)
+        // this us called a getter
+        public State GetState()
         {
-           // throw new NotImplementedException();
-            material = Material.Iron;
-            lockType = LockType.Expert;
-            LootQuality = LootQuality.Green;
+            return _state;
         }
 
         public State Manipulate(Action action)
         {
-            //throw new NotImplementedException();
-            switch(action)
+            if (action == Action.Open)
             {
-                case Action.lock:
-                    Lock();
-                    break;
-                case Action.Unlock:
-                    Unlock();
-                    break;
-                case Action.Open:
-                    Open();
-                    break;
-                case Action.Close:
-                    Close();
-                    break;
-                
-                }
-                return _state;
+                Open();
             }
+            return _state;
         }
-
-        /*private void Open()
-        {
-            throw new NotImplementedException();
-        }*/
-
+            //treasurechest is unlock
         public void Unlock()
         {
-           // throw new NotImplementedException();
-           if (_state == State.Locked)
-           {
-            _state = State.Closed;
-           }
-           else if (_state == State.Closed)
-           {
-            Console.WriteLine("chest will not unlocked when it is closed");
-           }
-           else if (_state == State.Open)
-           {
-            Console.WriteLine("chest will not unlocked when it is open");
-           }
+            if (_state == State.Locked)
+            {
+                _state = State.Closed;
+            }
+            else if (_state == State.Closed)
+            {
+                Console.WriteLine("The chest is already unlocked!");
+            }
+            else if (_state == State.Open)
+            {
+                Console.WriteLine("The chest cannot be unlocked because it is already open.");
+            }
         }
-        //lock treasure chest
+            //treasurechest is lock
         public void Lock()
         {
-           // throw new NotImplementedException();
-           if (_state == State.Closed)
-           {
-            _state = State.Locked;
-           }
-           else if (_state == State.Locked)
-           {
-            Console.WriteLine("chest is locked when it is closed");
-           }
-           else if (_state == State.Open)
-           {
-            Console.WriteLine("chest will not locked when it is open");
-           }
+            if (_state == State.Closed)
+            {
+                _state = State.Locked;
+            }
+            else if (_state == State.Locked)
+            {
+                Console.WriteLine("The chest is already locked!");
+            }
+            else if (_state == State.Open)
+            {
+                Console.WriteLine("The chest is already unlocked!");
+            }
         }
-        }
-        //open treasure chest
+        //treasurechest is open
         public void Open()
         {
-            //throw new NotImplementedException();
             if (_state == State.Closed)
-           {
-            _state = State.Open;
-           }
-           else if (_state == State.Open)
-           {
-            Console.WriteLine("chest is open");
-           }
-           else if (_state == State.Locked)
-           {
-            Console.WriteLine("chest is locked");
-           }
+            {
+                _state = State.Open;
+            }
+            else if (_state == State.Open)
+            {
+                Console.WriteLine("The chest is already open!");
+            }
+            else if (_state == State.Locked)
+            {
+                Console.WriteLine("The chest cannot be opened because it is locked.");
+            }
         }
-        }
-        //close treasure chest
-        public void Close()
+        //treasurechest is close
+        private void Close()
         {
-            //throw new NotImplementedException();
             if (_state == State.Open)
-           {
-            _state = State.Closed;
-           }
-           else if (_state == State.Closed)
-           {
-            Console.WriteLine("chest is closed");
-           }
-           else if (_state == State.Locked)
-           {
-            Console.WriteLine("chest is locked");
-           }
+            {
+                _state = State.Closed;
+            }
+            else if (_state == State.Closed)
+            {
+                Console.WriteLine("The chest is already closed!");
+            }
+            else if (_state == State.Locked)
+            {
+                Console.WriteLine("The chest cannot be closed because it is locked.");
+            }
         }
 
         public override string ToString()
