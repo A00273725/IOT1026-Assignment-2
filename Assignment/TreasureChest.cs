@@ -1,124 +1,126 @@
-﻿﻿namespace Assignment
+﻿﻿using System;
+
+public enum ChestState
 {
-    public class TreasureChest
+    Open,
+    Closed,
+    Locked
+}
+
+public class TreasureChest
+{
+    private string _material;
+    private string _lockType;
+    private string _lootQuality;
+    private ChestState _state;
+
+    public TreasureChest()
     {
-        private State _state = State.Locked;
-        private readonly Material _material;
-        private readonly LockType _lockType;
-        private readonly LootQuality _lootQuality;
+        _material = "Wood";
+        _lockType = "None";
+        _lootQuality = "Common";
+        _state = ChestState.Closed;
+    }
 
-        // Default Constructor
-        public TreasureChest()
-        {
-            _material = Material.Iron;
-            _lockType = LockType.Expert;
-            _lootQuality = LootQuality.Green;
-        }
+    public TreasureChest(string material, string lockType, string lootQuality)
+    {
+        _material = material;
+        _lockType = lockType;
+        _lootQuality = lootQuality;
+        _state = ChestState.Closed;
+    }
 
-        // document xml
-        public TreasureChest(State state) : this()
+    public string Manipulate(string action)
+    {
+        switch (action.ToLower())
         {
-            _state = state;
+            case "open":
+                return Open();
+            case "close":
+                return Close();
+            case "lock":
+                return Lock();
+            case "unlock":
+                return Unlock();
+            default:
+                return "Invalid action.";
         }
-        public TreasureChest(Material material, LockType lockType, LootQuality lootQuality)
-        {
-            _material = material;
-            _lockType = lockType;
-            _lootQuality = lootQuality;
-        }
-        // this us called a getter
-        public State GetState()
-        {
-            return _state;
-        }
+    }
 
-        public State Manipulate(Action action)
+    public string Open()
+    {
+        switch (_state)
         {
-            if (action == Action.Open)
-            {
-                Open();
-            }
-            return _state;
+            case ChestState.Open:
+                return "Chest is already open.";
+            case ChestState.Closed:
+                _state = ChestState.Open;
+                return "Chest opened.";
+            case ChestState.Locked:
+                return "Cannot open a locked chest.";
+            default:
+                return "Invalid chest state.";
         }
-            //treasurechest is unlock
-        public void Unlock()
-        {
-            if (_state == State.Locked)
-            {
-                _state = State.Closed;
-            }
-            else if (_state == State.Closed)
-            {
-                Console.WriteLine("The chest is already unlocked!");
-            }
-            else if (_state == State.Open)
-            {
-                Console.WriteLine("The chest cannot be unlocked because it is already open.");
-            }
-        }
-            //treasurechest is lock
-        public void Lock()
-        {
-            if (_state == State.Closed)
-            {
-                _state = State.Locked;
-            }
-            else if (_state == State.Locked)
-            {
-                Console.WriteLine("The chest is already locked!");
-            }
-            else if (_state == State.Open)
-            {
-                Console.WriteLine("The chest is already unlocked!");
-            }
-        }
-        //treasurechest is open
-        public void Open()
-        {
-            if (_state == State.Closed)
-            {
-                _state = State.Open;
-            }
-            else if (_state == State.Open)
-            {
-                Console.WriteLine("The chest is already open!");
-            }
-            else if (_state == State.Locked)
-            {
-                Console.WriteLine("The chest cannot be opened because it is locked.");
-            }
-        }
-        //treasurechest is close
-        private void Close()
-        {
-            if (_state == State.Open)
-            {
-                _state = State.Closed;
-            }
-            else if (_state == State.Closed)
-            {
-                Console.WriteLine("The chest is already closed!");
-            }
-            else if (_state == State.Locked)
-            {
-                Console.WriteLine("The chest cannot be closed because it is locked.");
-            }
-        }
+    }
 
-        public override string ToString()
+    public string Close()
+    {
+        switch (_state)
         {
-            return $"A {_state} chest with the following properties:\nMaterial: {_material}\nLock Type: {_lockType}\nLoot Quality: {_lootQuality}";
+            case ChestState.Open:
+                _state = ChestState.Closed;
+                return "Chest closed.";
+            case ChestState.Closed:
+                return "Chest is already closed.";
+            case ChestState.Locked:
+                return "Cannot close a locked chest.";
+            default:
+                return "Invalid chest state.";
         }
+    }
 
-        private static void ConsoleHelper(string prop1, string prop2, string prop3)
+    public string Lock()
+    {
+        switch (_state)
         {
-            Console.WriteLine($"Choose from the following properties.\n1.{prop1}\n2.{prop2}\n3.{prop3}");
+            case ChestState.Open:
+                return "Cannot lock an open chest.";
+            case ChestState.Closed:
+                _state = ChestState.Locked;
+                return "Chest locked.";
+            case ChestState.Locked:
+                return "Chest is already locked.";
+            default:
+                return "Invalid chest state.";
         }
+    }
 
-        public enum State { Open, Closed, Locked };
-        public enum Action { Open, Close, Lock, Unlock };
-        public enum Material { Oak, RichMahogany, Iron };
-        public enum LockType { Novice, Intermediate, Expert };
-        public enum LootQuality { Grey, Green, Purple };
+    public string Unlock()
+    {
+        switch (_state)
+        {
+            case ChestState.Open:
+                return "Cannot unlock an open chest.";
+            case ChestState.Closed:
+                return "Cannot unlock a closed chest.";
+            case ChestState.Locked:
+                _state = ChestState.Closed;
+                return "Chest unlocked.";
+            default:
+                return "Invalid chest state.";
+        }
+    }
+
+    public override string ToString()
+    {
+        return $"Material: {_material}, Lock Type: {_lockType}, Loot Quality: {_lootQuality}, State: {_state}";
+    }
+}
+
+public static class ConsoleHelper
+{
+    public static void Write(string text)
+    {
+        Console.WriteLine(text);
     }
 }
